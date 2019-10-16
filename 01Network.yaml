@@ -16,6 +16,9 @@ Resources:
         Ref: VPC
       CidrBlock: 10.0.2.0/24
       AvailabilityZone: "ap-southeast-2a"
+      Tags:
+        - Key: "Name"
+          Value: "ELB default - Public Subnet 1"
   ELBSubnetB:
     Type: AWS::EC2::Subnet
     Properties:
@@ -23,3 +26,15 @@ Resources:
         Ref: VPC
       CidrBlock: 10.0.3.0/24
       AvailabilityZone: "ap-southeast-2b"
+      Tags:
+        - Key: "Name"
+          Value: "ELB default - Public Subnet 2"
+
+  ELBSubnetsParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: ELBSubnets
+      Name: /cd/elb-subnets
+      Type: StringList
+      Value: !Sub "${ELBSubnetA}, ${ELBSubnetB}"
+
