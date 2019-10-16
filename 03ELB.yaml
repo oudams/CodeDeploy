@@ -1,0 +1,27 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Define a load balancer
+Parameters:
+  ELBSG:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Default VPC
+    Default: /cd/elb-sg
+
+  ELBSubnets:
+    Description: Public subnet ids for ELB
+    Type: AWS::SSM::Parameter::Value<CommaDelimitedList>
+    Default: /cd/elb-subnets
+
+Resources:
+  ELB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      SecurityGroups:
+        - Ref: ELBSG
+      Subnets:
+        - Fn::Select:
+            - 0
+            - Ref: ELBSubnets
+        - Fn::Select:
+            - 1
+            - Ref: ELBSubnets
