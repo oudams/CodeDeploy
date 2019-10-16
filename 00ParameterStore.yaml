@@ -1,0 +1,13 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Define a set of parameter store
+
+Resources:
+  ApplicationImageURI:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: Application docker image URI
+      Name: /cd/image-uri
+      Type: String
+      Value: "883979811993.dkr.ecr.ap-southeast-2.amazonaws.com/cdapp"
+
