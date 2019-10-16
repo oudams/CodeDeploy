@@ -1,0 +1,25 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Network config
+
+Parameters:
+  VPC:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::VPC>
+    Description: Default VPC
+    Default: /default/vpc
+
+Resources:
+  ELBSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: "ap-southeast-2a"
+  ELBSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone: "ap-southeast-2b"
