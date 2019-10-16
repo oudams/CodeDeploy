@@ -1,0 +1,37 @@
+---
+AWSTemplateFormatVersion: 2010-09-09
+Description: Define SG for a load balancer
+Parameters:
+  VPC:
+    Type: AWS::SSM::Parameter::Value<String>
+    Description: Default VPC
+    Default: /default/vpc
+
+Resources:
+  ELBSG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ELB Security Group - Allow http to client host
+      VpcId:
+        Ref: VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: "Name"
+          Value: "ELB SG default for Code Deploy exercise"
+
+  ELBSGParam:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: Param of a Security Group for a load balancer
+      Name: /cd/elb-sg
+      Type: String
+      Value: !Sub "${ELBSG}"
